@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Paster</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <i data-lucide="clipboard" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;"></i>
+      Paster
+    </h1>
+    <div class="user-info">Logado como: <strong id="username"></strong></div>
+    <div class="textarea-container">
+      <div class="textarea-header">
+        <label class="checkbox-container">
+          <input type="checkbox" id="wordWrap" onchange="toggleWordWrap()">
+          <span>Word Wrap</span>
+        </label>
+      </div>
+      <textarea id="content" placeholder="Cole qualquer coisa aqui ou arraste um arquivo..."></textarea>
+    </div>
+    <div class="button-group">
+      <div class="button-group-left">
+        <button class="btn-secondary" onclick="copyContent()">
+          <i data-lucide="copy"></i>
+          <span>Copiar</span>
+        </button>
+        <button class="btn-tertiary" onclick="document.getElementById('fileInput').click()">
+          <i data-lucide="upload"></i>
+          <span>Carregar Arquivo</span>
+        </button>
+      </div>
+      <button class="btn-primary" onclick="sendContent()">
+        <i data-lucide="send"></i>
+        <span>Enviar</span>
+      </button>
+    </div>
+    <input type="file" id="fileInput" onchange="loadFile(event)">
+    <div id="message" class="message">Enviado com sucesso!</div>
+    <div id="fileInfo" class="file-info"></div>
+  </div>
+  <script src="/app.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
