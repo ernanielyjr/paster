@@ -19,27 +19,21 @@ if (!fs.existsSync(usersFilePath)) {
   process.exit(1);
 }
 
-let usersData;
+let usersList;
 try {
   const fileContent = fs.readFileSync(usersFilePath, 'utf-8');
-  usersData = JSON.parse(fileContent);
+  usersList = JSON.parse(fileContent);
 } catch (err) {
   console.error('\nERRO: Falha ao ler ou processar users.json');
   console.error(err.message);
   process.exit(1);
 }
 
-// Validate format: { "username": "password" }
-if (typeof usersData !== 'object' || usersData === null || Array.isArray(usersData)) {
-  console.error('\nERRO: users.json deve ser um objeto no formato: { "username": "password" }');
+// Validate format: array of { username, password, isAdmin? }
+if (!Array.isArray(usersList)) {
+  console.error('\nERRO: users.json deve ser um array no formato: [{ "username": "user", "password": "pass", "isAdmin": true }]');
   process.exit(1);
 }
-
-// Convert object to array of users
-const usersList = Object.entries(usersData).map(([username, password]) => ({
-  username,
-  password: String(password)
-}));
 
 if (usersList.length === 0) {
   console.error('\nERRO: users.json deve conter ao menos um usuário');
@@ -54,8 +48,9 @@ for (const user of usersList) {
   }
 
   try {
-    createUser(user.username, user.password);
-    console.log(`Usuário criado: ${user.username}`);
+    createUser(user.username, user.password, user.isAdmin || false);
+    const adminLabel = user.isAdmin ? ' (admin)' : '';
+    console.log(`Usuário criado: ${user.username}${adminLabel}`);
   } catch (err) {
     if (err.message.includes('UNIQUE constraint failed')) {
       console.log(`Usuário já existe: ${user.username}`);

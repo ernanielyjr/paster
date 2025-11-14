@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import { getUserByUsername } from './models/user.js';
 
 export function basicAuth(req, res, next) {
@@ -16,16 +16,9 @@ export function basicAuth(req, res, next) {
   // Get user from database
   const user = getUserByUsername(username);
 
-  if (user) {
-    const expectedPassword = Buffer.from(user.password);
-    const providedPassword = Buffer.from(password);
-
-    // Use constant-time comparison to prevent timing attacks
-    if (expectedPassword.length === providedPassword.length &&
-        crypto.timingSafeEqual(expectedPassword, providedPassword)) {
-      req.user = user;
-      return next();
-    }
+  if (user && bcrypt.compareSync(password, user.password)) {
+    req.user = user;
+    return next();
   }
 
   res.setHeader('WWW-Authenticate', 'Basic realm="Paster"');

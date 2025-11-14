@@ -1,4 +1,12 @@
-{
-  "alice": "senha123",
-  "bob": "senha456"
-}
+[
+  {
+    "username": "alice",
+    "password": "senha123",
+    "isAdmin": true
+  },
+  {
+    "username": "bob",
+    "password": "senha456",
+    "isAdmin": false
+  }
+]
