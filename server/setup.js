@@ -7,7 +7,7 @@ import { createUser } from './models/user.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('Setting up database and initial users...');
+console.log('Configurando banco de dados e usuários iniciais...');
 
 initDatabase();
 
@@ -15,7 +15,7 @@ initDatabase();
 const usersFilePath = path.join(__dirname, '..', 'users.json');
 
 if (!fs.existsSync(usersFilePath)) {
-  console.error('\n❌ ERROR: users.json not found!');
+  console.error('\nERRO: arquivo users.json não encontrado!');
   process.exit(1);
 }
 
@@ -24,14 +24,14 @@ try {
   const fileContent = fs.readFileSync(usersFilePath, 'utf-8');
   usersData = JSON.parse(fileContent);
 } catch (err) {
-  console.error('\n❌ ERROR: Failed to read or parse users.json');
+  console.error('\nERRO: Falha ao ler ou processar users.json');
   console.error(err.message);
   process.exit(1);
 }
 
 // Validate format: { "username": "password" }
 if (typeof usersData !== 'object' || usersData === null || Array.isArray(usersData)) {
-  console.error('\n❌ ERROR: users.json must be an object with format: { "username": "password" }');
+  console.error('\nERRO: users.json deve ser um objeto no formato: { "username": "password" }');
   process.exit(1);
 }
 
@@ -42,28 +42,28 @@ const usersList = Object.entries(usersData).map(([username, password]) => ({
 }));
 
 if (usersList.length === 0) {
-  console.error('\n❌ ERROR: users.json must contain at least one user');
+  console.error('\nERRO: users.json deve conter ao menos um usuário');
   process.exit(1);
 }
 
 // Create users
 for (const user of usersList) {
   if (!user.username || !user.password) {
-    console.warn(`⚠ Skipping invalid user entry: ${JSON.stringify(user)}`);
+    console.warn(`AVISO: Ignorando entrada de usuário inválida: ${JSON.stringify(user)}`);
     continue;
   }
 
   try {
     createUser(user.username, user.password);
-    console.log(`✓ User created: ${user.username}`);
+    console.log(`Usuário criado: ${user.username}`);
   } catch (err) {
     if (err.message.includes('UNIQUE constraint failed')) {
-      console.log(`ℹ User already exists: ${user.username}`);
+      console.log(`Usuário já existe: ${user.username}`);
     } else {
-      console.error(`✗ Error creating user ${user.username}:`, err.message);
+      console.error(`Erro ao criar usuário ${user.username}:`, err.message);
     }
   }
 }
 
-console.log('\nSetup complete! You can now start the server with: npm start');
+console.log('\nConfiguração concluída! Você pode iniciar o servidor com: npm start');
 process.exit(0);

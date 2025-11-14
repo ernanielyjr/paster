@@ -38,17 +38,17 @@ app.use('/api', apiRoutes);
 
 // Graceful shutdown
 process.on('SIGINT', () => {
-  console.log('\nShutting down gracefully...');
+  console.log('\nEncerrando servidor...');
   closeDatabase();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  console.log('\nShutting down gracefully...');
+  console.log('\nEncerrando servidor...');
   closeDatabase();
   process.exit(0);
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

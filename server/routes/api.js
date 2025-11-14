@@ -15,11 +15,11 @@ router.post('/content', (req, res) => {
 
   // Validate content
   if (typeof content !== 'string') {
-    return res.status(400).json({ error: 'Content must be a string' });
+    return res.status(400).json({ error: 'Conteúdo deve ser uma string' });
   }
 
   // Log without exposing content
-  console.log(`[${user.username}] Content updated (${content.length} chars)`);
+  console.log(`[${user.username}] Conteúdo atualizado (${content.length} caracteres)`);
 
   saveContent(user.id, content);
   res.sendStatus(200);
