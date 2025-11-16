@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { getUserByUsername } from './models/user.js';
+import { getUserByUsername } from '../models/user.js';
 
 export function basicAuth(req, res, next) {
   const authHeader = req.headers.authorization;
