@@ -11,7 +11,6 @@ console.log('Configurando banco de dados e usuários iniciais...');
 
 initDatabase();
 
-// Load users from JSON file
 const usersFilePath = path.join(__dirname, '..', 'users.json');
 
 if (!fs.existsSync(usersFilePath)) {
@@ -29,21 +28,14 @@ try {
   process.exit(1);
 }
 
-// Validate format: array of { username, password, isAdmin? }
-if (!Array.isArray(usersList)) {
-  console.error('\nERRO: users.json deve ser um array no formato: [{ "username": "user", "password": "pass", "isAdmin": true }]');
+if (!Array.isArray(usersList) || usersList.length === 0) {
+  console.error('\nERRO: users.json é inválido');
   process.exit(1);
 }
 
-if (usersList.length === 0) {
-  console.error('\nERRO: users.json deve conter ao menos um usuário');
-  process.exit(1);
-}
-
-// Create users
 for (const user of usersList) {
   if (!user.username || !user.password) {
-    console.warn(`AVISO: Ignorando entrada de usuário inválida: ${JSON.stringify(user)}`);
+    console.warn(`AVISO: Ignorando dado inválido: ${JSON.stringify(user)}`);
     continue;
   }
 
@@ -60,5 +52,5 @@ for (const user of usersList) {
   }
 }
 
-console.log('\nConfiguração concluída! Você pode iniciar o servidor com: npm start');
+console.log('\nConfiguração concluída!');
 process.exit(0);

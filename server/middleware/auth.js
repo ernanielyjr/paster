@@ -13,7 +13,6 @@ export function basicAuth(req, res, next) {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
 
-  // Get user from database
   const user = getUserByUsername(username);
 
   if (user && bcrypt.compareSync(password, user.password)) {

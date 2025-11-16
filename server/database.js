@@ -8,13 +8,11 @@ const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, '..', 'paster.db');
 const db = new Database(DB_PATH);
 
-// Enable foreign keys
 db.pragma('foreign_keys = ON');
 
 export function initDatabase() {
   console.log('Initializing database...');
 
-  // Create users table
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,7 +23,6 @@ export function initDatabase() {
     )
   `);
 
-  // Create contents table
   db.exec(`
     CREATE TABLE IF NOT EXISTS contents (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,7 +33,6 @@ export function initDatabase() {
     )
   `);
 
-  // Create index for faster lookups
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_contents_user_id ON contents(user_id)
   `);

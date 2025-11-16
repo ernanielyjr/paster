@@ -1,4 +1,3 @@
-// Load initial data
 async function loadInitialData() {
   try {
     const response = await fetch('/api/content');
@@ -45,7 +44,6 @@ function copyContent() {
 function loadFile(event) {
   const file = event.target.files[0];
   if (file) {
-    // Limit file size to 1MB
     if (file.size > 1024 * 1024) {
       showMessage('Arquivo muito grande (máx: 1MB)', '#f44336');
       return;
@@ -80,11 +78,9 @@ function showMessage(text, color) {
   }, 3000);
 }
 
-// Initialize after DOM loads
 function initializeApp() {
   const textarea = document.getElementById('content');
 
-  // Drag and drop
   textarea.addEventListener('dragover', (e) => {
     e.preventDefault();
     textarea.classList.add('drag-over');
@@ -113,13 +109,9 @@ function initializeApp() {
     }
   });
 
-
-
-  // Load initial data
   loadInitialData();
 }
 
-// Toggle word wrap
 function toggleWordWrap() {
   const textareaEl = document.getElementById('content');
   const checkbox = document.getElementById('wordWrap');
@@ -127,5 +119,4 @@ function toggleWordWrap() {
   textareaEl.style.overflowX = checkbox.checked ? 'hidden' : 'auto';
 }
 
-// Initialize app
 initializeApp();
