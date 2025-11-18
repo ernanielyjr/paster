@@ -13,10 +13,10 @@ export function basicAuth(req, res, next) {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
 
-  const user = getUserByUsername(username);
+  const {password: hashedPassword, ...userWithoutPassword} = getUserByUsername(username);
 
-  if (user && bcrypt.compareSync(password, user.password)) {
-    req.user = user;
+  if (userWithoutPassword && bcrypt.compareSync(password, hashedPassword)) {
+    req.user = userWithoutPassword;
     return next();
   }
 
