@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/content', (req, res) => {
   const user = req.user;
   const content = getContentByUserId(user.id);
-  res.json({ username: user.username, content });
+  res.json({ username: user.username, content, isAdmin: user.is_admin === 1 });
 });
 
 router.post('/content', (req, res) => {

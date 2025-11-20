@@ -3,7 +3,16 @@ async function loadInitialData() {
     const response = await fetch('/api/content');
     const data = await response.json();
     document.getElementById('content').value = data.content;
-    document.getElementById('username').textContent = data.username;
+
+    const user = data.username;
+    const isAdmin = data.isAdmin;
+
+    document.getElementById('username').textContent = user;
+
+    if (isAdmin) {
+      document.getElementById('adminButton').classList.add('visible');
+      lucide.createIcons();
+    }
   } catch (err) {
     console.error('Erro ao carregar dados iniciais:', err);
   }

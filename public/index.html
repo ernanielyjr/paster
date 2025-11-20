@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Paster</title>
+  <link rel="stylesheet" href="/common.css">
   <link rel="stylesheet" href="/styles.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -11,15 +12,19 @@
       <i data-lucide="clipboard" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;"></i>
       Paster
     </h1>
-    <div class="user-info">Logado como: <strong id="username"></strong></div>
+    <div class="user-info">
+      <span>Logado como: <strong id="username"></strong></span>
+      <button id="adminButton" class="btn-primary" onclick="window.location.href='/admin.html'">
+        <i data-lucide="shield"></i>
+        <span>Administrar</span>
+      </button>
+    </div>
     <div class="textarea-container">
-      <div class="textarea-header">
-        <label class="checkbox-container">
-          <input type="checkbox" id="wordWrap" onchange="toggleWordWrap()">
-          <span>Quebra de Linha</span>
-        </label>
-      </div>
       <textarea id="content" placeholder="Cole qualquer coisa aqui ou arraste um arquivo..."></textarea>
+      <label class="checkbox-container">
+        <input type="checkbox" id="wordWrap" onchange="toggleWordWrap()">
+        <span>Quebra de Linha</span>
+      </label>
     </div>
     <div class="button-group">
       <div class="button-group-left">

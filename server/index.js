@@ -3,7 +3,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { closeDatabase, initDatabase } from './database.js';
 import { basicAuth } from './middleware/auth.js';
+import { isAdmin } from './middleware/isAdmin.js';
 import { noCache } from './middleware/noCache.js';
+import adminRoutes from './routes/admin.js';
 import apiRoutes from './routes/api.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,6 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(noCache);
 app.use(basicAuth);
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use('/api/admin', isAdmin, adminRoutes);
 app.use('/api', apiRoutes);
 
 process.on('SIGINT', () => {

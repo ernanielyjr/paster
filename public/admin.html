@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Painel Admin - Paster</title>
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="/admin.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="admin-header">
+      <h1>
+        <i data-lucide="shield" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;"></i>
+        Painel Admin
+      </h1>
+      <a href="/">
+        <i data-lucide="arrow-left"></i>
+        <span>Voltar ao Paster</span>
+      </a>
+    </div>
+
+    <div class="user-info">
+      <span>Logado como: <strong id="username"></strong></span>
+      <button class="btn-primary" onclick="openCreateModal()">
+        <i data-lucide="user-plus"></i>
+        <span>Novo Usuário</span>
+      </button>
+    </div>
+
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Tipo</th>
+          <th>Criado em</th>
+          <th>Último login</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="usersTableBody">
+        <tr>
+          <td colspan="6" class="no-users">Carregando...</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Novo Usuário</h2>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <form id="userForm">
+        <div class="form-group">
+          <label for="modalUsername">Username</label>
+          <input type="text" id="modalUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="modalPassword">Senha <span id="passwordHint" style="color: #a0a0a0; font-weight: normal;">(deixe em branco para manter)</span></label>
+          <input type="password" id="modalPassword">
+        </div>
+        <div class="form-group-checkbox">
+          <input type="checkbox" id="modalIsAdmin">
+          <label for="modalIsAdmin">Administrador</label>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/admin.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

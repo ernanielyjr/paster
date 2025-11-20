@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { getUserByUsername } from '../models/user.js';
+import { getUserByUsername, updateLastLogin } from '../models/user.js';
 
 export function basicAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -16,6 +16,7 @@ export function basicAuth(req, res, next) {
   const {password: hashedPassword, ...userWithoutPassword} = getUserByUsername(username);
 
   if (userWithoutPassword && bcrypt.compareSync(password, hashedPassword)) {
+    updateLastLogin(userWithoutPassword.id);
     req.user = userWithoutPassword;
     return next();
   }
