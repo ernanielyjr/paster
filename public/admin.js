@@ -47,23 +47,27 @@ function renderUsers() {
     return;
   }
 
-  tbody.innerHTML = users.map(user => `
-    <tr>
-      <td>${user.id}</td>
-      <td>${user.username}</td>
-      <td><span class="badge ${user.is_admin ? 'badge-admin' : 'badge-user'}">${user.is_admin ? 'Admin' : 'Usuário'}</span></td>
-      <td><span class="datetime">${formatDateTime(user.created_at)}</span></td>
-      <td><span class="datetime">${user.last_login_at ? formatDateTime(user.last_login_at) : 'Nunca'}</span></td>
-      <td class="actions">
-        <button class="btn-secondary btn-small" onclick="openEditModal(${user.id})">
-          <i data-lucide="edit"></i>
-        </button>
-        <button class="btn-danger btn-small" onclick="deleteUser(${user.id})">
-          <i data-lucide="trash-2"></i>
-        </button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = users.map(user => {
+    const isCurrentUser = user.username === currentUser;
+
+    return `
+      <tr>
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td><span class="badge ${user.is_admin ? 'badge-admin' : 'badge-user'}">${user.is_admin ? 'Admin' : 'Usuário'}</span></td>
+        <td><span class="datetime">${formatDateTime(user.created_at)}</span></td>
+        <td><span class="datetime">${user.last_login_at ? formatDateTime(user.last_login_at) : 'Nunca'}</span></td>
+        <td class="actions">
+          <button class="btn-secondary btn-small" onclick="openEditModal(${user.id})">
+            <i data-lucide="edit"></i>
+          </button>
+          <button class="btn-danger btn-small" onclick="deleteUser(${user.id})" ${isCurrentUser ? 'disabled' : ''}>
+            <i data-lucide="trash-2"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 
   lucide.createIcons();
 }
@@ -84,6 +88,7 @@ function openCreateModal() {
   editingUserId = null;
   document.getElementById('modalTitle').textContent = 'Novo Usuário';
   document.getElementById('modalUsername').value = '';
+  document.getElementById('modalUsername').disabled = false;
   document.getElementById('modalPassword').value = '';
   document.getElementById('modalPassword').required = true;
   document.getElementById('modalIsAdmin').checked = false;
@@ -98,6 +103,7 @@ function openEditModal(userId) {
   editingUserId = userId;
   document.getElementById('modalTitle').textContent = 'Editar Usuário';
   document.getElementById('modalUsername').value = user.username;
+  document.getElementById('modalUsername').disabled = true;
   document.getElementById('modalPassword').value = '';
   document.getElementById('modalPassword').required = false;
   document.getElementById('modalIsAdmin').checked = user.is_admin === 1;

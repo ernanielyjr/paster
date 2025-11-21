@@ -21,10 +21,16 @@
     </div>
     <div class="textarea-container">
       <textarea id="content" placeholder="Cole qualquer coisa aqui ou arraste um arquivo..."></textarea>
-      <label class="checkbox-container">
-        <input type="checkbox" id="wordWrap" onchange="toggleWordWrap()">
-        <span>Quebra de Linha</span>
-      </label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" id="wordWrap" onchange="toggleWordWrap()">
+          <span>Quebra de Linha</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="autoSave" onchange="toggleAutoSave()">
+          <span>Enviar Automaticamente</span>
+        </label>
+      </div>
     </div>
     <div class="button-group">
       <div class="button-group-left">
@@ -44,7 +50,6 @@
     </div>
     <input type="file" id="fileInput" onchange="loadFile(event)">
     <div id="message" class="message">Enviado com sucesso!</div>
-    <div id="fileInfo" class="file-info"></div>
   </div>
   <script src="/app.js"></script>
   <script>

@@ -34,19 +34,14 @@ router.post('/users', (req, res) => {
 
 router.put('/users/:id', (req, res) => {
   const userId = parseInt(req.params.id);
-  const { username, password, isAdmin: userIsAdmin } = req.body;
-
-  if (!username) {
-    return res.status(400).json({ error: 'Username é obrigatório' });
-  }
+  const { password, isAdmin: userIsAdmin } = req.body;
 
   try {
-    updateUser(userId, username, password, userIsAdmin || false);
-    res.json({ id: userId, username, is_admin: userIsAdmin || false });
+    updateUser(userId, password, userIsAdmin || false);
+    const users = getAllUsers();
+    const updatedUser = users.find(u => u.id === userId);
+    res.json({ id: userId, username: updatedUser.username, is_admin: userIsAdmin || false });
   } catch (err) {
-    if (err.message.includes('UNIQUE constraint failed')) {
-      return res.status(409).json({ error: 'Username já existe' });
-    }
     console.error('Erro ao atualizar usuário:', err.message);
     res.status(500).json({ error: 'Erro ao atualizar usuário' });
   }

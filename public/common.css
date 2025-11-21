@@ -47,7 +47,7 @@ h1 {
 }
 
 button {
-  padding: 12px 28px;
+  padding: 12px 20px;
   font-size: 15px;
   cursor: pointer;
   border: none;
@@ -72,6 +72,17 @@ button:hover {
 
 button:active {
   transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-primary {
@@ -169,6 +180,14 @@ input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;
   border-color: #5cb85c;
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #0d0d0d;
+  color: #6a6a6a;
 }
 
 label {

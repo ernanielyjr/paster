@@ -27,15 +27,15 @@ export function updateLastLogin(userId) {
   stmt.run(userId);
 }
 
-export function updateUser(userId, username, password, isAdmin) {
+export function updateUser(userId, password, isAdmin) {
   const db = getDatabase();
   if (password) {
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const stmt = db.prepare('UPDATE users SET username = ?, password = ?, is_admin = ? WHERE id = ?');
-    stmt.run(username, hashedPassword, isAdmin ? 1 : 0, userId);
+    const stmt = db.prepare('UPDATE users SET password = ?, is_admin = ? WHERE id = ?');
+    stmt.run(hashedPassword, isAdmin ? 1 : 0, userId);
   } else {
-    const stmt = db.prepare('UPDATE users SET username = ?, is_admin = ? WHERE id = ?');
-    stmt.run(username, isAdmin ? 1 : 0, userId);
+    const stmt = db.prepare('UPDATE users SET is_admin = ? WHERE id = ?');
+    stmt.run(isAdmin ? 1 : 0, userId);
   }
 }
 

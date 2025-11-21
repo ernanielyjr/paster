@@ -61,20 +61,14 @@ function loadFile(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
       document.getElementById('content').value = e.target.result;
-      document.getElementById('fileInfo').textContent = `Arquivo carregado: ${file.name} (${formatFileSize(file.size)})`;
       showMessage('Arquivo carregado com sucesso!', '#FF9800');
+      handleContentChange();
     };
     reader.onerror = function() {
       showMessage('Erro ao carregar arquivo', '#f44336');
     };
     reader.readAsText(file);
   }
-}
-
-function formatFileSize(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
 function showMessage(text, color) {
@@ -87,8 +81,56 @@ function showMessage(text, color) {
   }, 3000);
 }
 
+let autoSaveTimeout = null;
+let autoSaveEnabled = false;
+
+function toggleAutoSave() {
+  const checkbox = document.getElementById('autoSave');
+  autoSaveEnabled = checkbox.checked;
+  localStorage.setItem('autoSave', autoSaveEnabled);
+
+  if (autoSaveEnabled) {
+    sendContent();
+  } else if (autoSaveTimeout) {
+    clearTimeout(autoSaveTimeout);
+    autoSaveTimeout = null;
+  }
+}
+
+function handleContentChange() {
+  if (!autoSaveEnabled) return;
+
+  if (autoSaveTimeout) {
+    clearTimeout(autoSaveTimeout);
+  }
+
+  autoSaveTimeout = setTimeout(() => {
+    sendContent();
+    autoSaveTimeout = null;
+  }, 1000);
+}
+
 function initializeApp() {
   const textarea = document.getElementById('content');
+
+  const savedWordWrap = localStorage.getItem('wordWrap') === 'true';
+  const savedAutoSave = localStorage.getItem('autoSave') === 'true';
+
+  const wordWrapCheckbox = document.getElementById('wordWrap');
+  const autoSaveCheckbox = document.getElementById('autoSave');
+
+  if (savedWordWrap) {
+    wordWrapCheckbox.checked = true;
+    textarea.style.whiteSpace = 'pre-wrap';
+    textarea.style.overflowX = 'hidden';
+  }
+
+  if (savedAutoSave) {
+    autoSaveCheckbox.checked = true;
+    autoSaveEnabled = true;
+  }
+
+  textarea.addEventListener('input', handleContentChange);
 
   textarea.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -108,8 +150,8 @@ function initializeApp() {
       const reader = new FileReader();
       reader.onload = function(event) {
         textarea.value = event.target.result;
-        document.getElementById('fileInfo').textContent = `Arquivo carregado: ${file.name} (${formatFileSize(file.size)})`;
         showMessage('Arquivo carregado com sucesso!', '#FF9800');
+        handleContentChange();
       };
       reader.onerror = function() {
         showMessage('Erro ao carregar arquivo', '#f44336');
@@ -124,8 +166,10 @@ function initializeApp() {
 function toggleWordWrap() {
   const textareaEl = document.getElementById('content');
   const checkbox = document.getElementById('wordWrap');
-  textareaEl.style.whiteSpace = checkbox.checked ? 'pre-wrap' : 'pre';
-  textareaEl.style.overflowX = checkbox.checked ? 'hidden' : 'auto';
+  const isWrapped = checkbox.checked;
+  textareaEl.style.whiteSpace = isWrapped ? 'pre-wrap' : 'pre';
+  textareaEl.style.overflowX = isWrapped ? 'hidden' : 'auto';
+  localStorage.setItem('wordWrap', isWrapped);
 }
 
 initializeApp();
