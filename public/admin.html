@@ -8,10 +8,12 @@
 </head>
 <body>
   <div class="container">
-    <div class="admin-header">
+    <div class="header">
       <h1>
         <i data-lucide="shield" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;"></i>
         Painel Admin
+
+        <small>Logado como: <strong id="username"></strong></small>
       </h1>
       <a href="/">
         <i data-lucide="arrow-left"></i>
@@ -19,13 +21,10 @@
       </a>
     </div>
 
-    <div class="user-info">
-      <span>Logado como: <strong id="username"></strong></span>
-      <button class="btn-primary" onclick="openCreateModal()">
-        <i data-lucide="user-plus"></i>
-        <span>Novo Usuário</span>
-      </button>
-    </div>
+    <button id="add-new-user" class="btn-primary" onclick="openCreateModal()">
+      <i data-lucide="user-plus"></i>
+      <span>Novo Usuário</span>
+    </button>
 
     <table class="users-table">
       <thead>

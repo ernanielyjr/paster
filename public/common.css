@@ -29,13 +29,33 @@ h1 {
   letter-spacing: -0.5px;
 }
 
-.user-info {
-  color: #a0a0a0;
-  margin-bottom: 30px;
+h1 small {
+  display: block;
   font-size: 14px;
+  color: #a0a0a0;
+  margin-top: 4px;
+  text-indent: 46px;
+  font-weight: normal;
+}
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
+}
+
+.header a {
+  color: #5dade2;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.header a:hover {
+  color: #3498db;
 }
 
 #adminButton {
