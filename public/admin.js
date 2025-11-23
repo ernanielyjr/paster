@@ -59,10 +59,10 @@ function renderUsers() {
         <td><span class="datetime">${user.last_login_at ? formatDateTime(user.last_login_at) : 'Nunca'}</span></td>
         <td class="actions">
           <button class="btn-secondary btn-small" onclick="openEditModal(${user.id})">
-            <i data-lucide="edit"></i>
+            <i data-lucide="edit" width="18" height="18"></i>
           </button>
           <button class="btn-danger btn-small" onclick="deleteUser(${user.id})" ${isCurrentUser ? 'disabled' : ''}>
-            <i data-lucide="trash-2"></i>
+            <i data-lucide="trash-2" width="18" height="18"></i>
           </button>
         </td>
       </tr>
