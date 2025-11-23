@@ -15,7 +15,7 @@
 
         <small>Logado como: <strong id="username"></strong></small>
       </h1>
-      <button id="adminButton" class="btn-primary" onclick="window.location.href='/admin.html'">
+      <button id="adminButton" class="btn-admin" onclick="window.location.href='/admin.html'">
         <i data-lucide="shield"></i>
         <span>Administrar</span>
       </button>
@@ -36,11 +36,11 @@
     </div>
     <div class="button-group">
       <div class="button-group-left">
-        <button class="btn-secondary" onclick="copyContent()">
+        <button class="btn-secondary btn-icon-expand" onclick="copyContent()">
           <i data-lucide="copy"></i>
           <span>Copiar</span>
         </button>
-        <button class="btn-tertiary" onclick="document.getElementById('fileInput').click()">
+        <button class="btn-tertiary btn-icon-expand" onclick="document.getElementById('fileInput').click()">
           <i data-lucide="upload"></i>
           <span>Carregar Arquivo</span>
         </button>

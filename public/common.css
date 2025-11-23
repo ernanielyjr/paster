@@ -77,13 +77,33 @@ button {
   letter-spacing: 0.3px;
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 button i {
   width: 18px;
   height: 18px;
 }
+
+button span {
+  margin-left: 8px;
+  display: inline-block;
+}
+
+.btn-icon-expand span {
+  opacity: 0;
+  max-width: 0;
+  margin-left: 0px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn-icon-expand:hover span {
+  opacity: 1;
+  max-width: 200px;
+  margin-left: 8px;
+}
+
 
 button:hover {
   transform: translateY(-2px);
@@ -130,6 +150,15 @@ button:disabled:hover {
 
 .btn-tertiary:hover {
   background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+}
+
+.btn-admin {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: white;
+}
+
+.btn-admin:hover {
+  background: linear-gradient(135deg, #8e44ad 0%, #7d3c98 100%);
 }
 
 .message {
