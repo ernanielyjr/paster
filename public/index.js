@@ -13,6 +13,8 @@ async function loadInitialData() {
       document.getElementById('adminButton').classList.add('visible');
       lucide.createIcons();
     }
+
+    updateCopyButtonState();
   } catch (err) {
     console.error('Erro ao carregar dados iniciais:', err);
   }
@@ -97,7 +99,15 @@ function toggleAutoSave() {
   }
 }
 
+function updateCopyButtonState() {
+  const content = document.getElementById('content').value;
+  const copyButton = document.getElementById('copyButton');
+  copyButton.disabled = content.trim() === '';
+}
+
 function handleContentChange() {
+  updateCopyButtonState();
+
   if (!autoSaveEnabled) return;
 
   if (autoSaveTimeout) {

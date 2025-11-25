@@ -115,7 +115,9 @@ button:active {
 }
 
 button:disabled {
-  opacity: 0.5;
+  background: #4a4a4a !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  opacity: 1;
   cursor: not-allowed;
   transform: none;
 }
