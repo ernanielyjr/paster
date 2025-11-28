@@ -70,7 +70,3 @@ textarea.drag-over {
   display: flex;
   gap: 12px;
 }
-
-#fileInput {
-  display: none;
-}
