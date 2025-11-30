@@ -17,13 +17,23 @@ export function createUser(username, password, isAdmin = false) {
 
 export function getAllUsers() {
   const db = getDatabase();
-  const stmt = db.prepare('SELECT id, username, is_admin, created_at, last_login_at FROM users');
+  const stmt = db.prepare(`
+    SELECT
+      u.id,
+      u.username,
+      u.is_admin,
+      u.created_at,
+      u.last_login_at,
+      c.updated_at as content_updated_at
+    FROM users u
+    LEFT JOIN contents c ON u.id = c.user_id
+  `);
   return stmt.all();
 }
 
 export function updateLastLogin(userId) {
   const db = getDatabase();
-  const stmt = db.prepare('UPDATE users SET last_login_at = CURRENT_TIMESTAMP WHERE id = ?');
+  const stmt = db.prepare("UPDATE users SET last_login_at = datetime('now', 'localtime') WHERE id = ?");
   stmt.run(userId);
 }
 

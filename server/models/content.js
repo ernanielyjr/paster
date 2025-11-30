@@ -14,12 +14,10 @@ export function saveContent(userId, content) {
   const existing = db.prepare('SELECT id FROM contents WHERE user_id = ?').get(userId);
 
   if (existing) {
-    // Update existing content
-    const stmt = db.prepare('UPDATE contents SET content = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?');
+    const stmt = db.prepare("UPDATE contents SET content = ?, updated_at = datetime('now', 'localtime') WHERE user_id = ?");
     stmt.run(content, userId);
   } else {
-    // Insert new content
-    const stmt = db.prepare('INSERT INTO contents (user_id, content) VALUES (?, ?)');
+    const stmt = db.prepare("INSERT INTO contents (user_id, content, updated_at) VALUES (?, ?, datetime('now', 'localtime'))");
     stmt.run(userId, content);
   }
 }

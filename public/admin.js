@@ -43,7 +43,7 @@ function renderUsers() {
   const tbody = document.getElementById('usersTableBody');
 
   if (users.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="no-users">Nenhum usuário cadastrado</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="no-users">Nenhum usuário cadastrado</td></tr>';
     return;
   }
 
@@ -57,6 +57,7 @@ function renderUsers() {
         <td><span class="badge ${user.is_admin ? 'badge-admin' : 'badge-user'}">${user.is_admin ? 'Admin' : 'Usuário'}</span></td>
         <td><span class="datetime">${formatDateTime(user.created_at)}</span></td>
         <td><span class="datetime">${user.last_login_at ? formatDateTime(user.last_login_at) : 'Nunca'}</span></td>
+        <td><span class="datetime">${user.content_updated_at ? formatDateTime(user.content_updated_at) : 'Nunca'}</span></td>
         <td class="actions">
           <button class="btn-secondary btn-small" onclick="openEditModal(${user.id})">
             <i data-lucide="edit" width="18" height="18"></i>
