@@ -10,37 +10,6 @@ const db = new Database(DB_PATH);
 
 db.pragma('foreign_keys = ON');
 
-export function initDatabase() {
-  console.log('Initializing database...');
-
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      is_admin INTEGER DEFAULT 0,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      last_login_at DATETIME
-    )
-  `);
-
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS contents (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      content TEXT DEFAULT '',
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    )
-  `);
-
-  db.exec(`
-    CREATE INDEX IF NOT EXISTS idx_contents_user_id ON contents(user_id)
-  `);
-
-  console.log('Database initialized successfully');
-}
-
 export function getDatabase() {
   return db;
 }

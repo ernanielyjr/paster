@@ -1,55 +1,52 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { initDatabase } from './database.js';
-import { createUser } from './models/user.js';
+import { getDatabase } from './database.js';
+import { createUser, getAllUsers } from './models/user.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+console.log('Configurando banco de dados...');
 
-console.log('Configurando banco de dados e usuários iniciais...');
+const db = getDatabase();
 
-initDatabase();
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    is_admin INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_login_at DATETIME
+  )
+`);
 
-const usersFilePath = path.join(__dirname, '..', 'users.json');
+db.exec(`
+  CREATE TABLE IF NOT EXISTS contents (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    content TEXT DEFAULT '',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )
+`);
 
-if (!fs.existsSync(usersFilePath)) {
-  console.error('\nERRO: arquivo users.json não encontrado!');
-  process.exit(1);
-}
+db.exec(`
+  CREATE INDEX IF NOT EXISTS idx_contents_user_id ON contents(user_id)
+`);
 
-let usersList;
-try {
-  const fileContent = fs.readFileSync(usersFilePath, 'utf-8');
-  usersList = JSON.parse(fileContent);
-} catch (err) {
-  console.error('\nERRO: Falha ao ler ou processar users.json');
-  console.error(err.message);
-  process.exit(1);
-}
+console.log('Tabelas criadas/verificadas com sucesso');
 
-if (!Array.isArray(usersList) || usersList.length === 0) {
-  console.error('\nERRO: users.json é inválido');
-  process.exit(1);
-}
+const allUsers = getAllUsers();
+const hasAdmin = allUsers.some(user => user.is_admin === 1);
 
-for (const user of usersList) {
-  if (!user.username || !user.password) {
-    console.warn(`AVISO: Ignorando dado inválido: ${JSON.stringify(user)}`);
-    continue;
-  }
-
+if (!hasAdmin) {
+  console.log('Nenhum usuário administrador encontrado. Criando usuário padrão...');
   try {
-    createUser(user.username, user.password, user.isAdmin || false);
-    const adminLabel = user.isAdmin ? ' (admin)' : '';
-    console.log(`Usuário criado: ${user.username}${adminLabel}`);
+    createUser('admin', 'admin', true);
+    console.log('Usuário criado: admin (admin)');
+    console.log('IMPORTANTE: Altere a senha padrão após o primeiro login!');
   } catch (err) {
-    if (err.message.includes('UNIQUE constraint failed')) {
-      console.log(`Usuário já existe: ${user.username}`);
-    } else {
-      console.error(`Erro ao criar usuário ${user.username}:`, err.message);
-    }
+    console.error('Erro ao criar usuário padrão:', err.message);
+    process.exit(1);
   }
+} else {
+  console.log('Já existe pelo menos um usuário administrador.');
 }
 
 console.log('\nConfiguração concluída!');

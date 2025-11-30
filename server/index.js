@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { closeDatabase, initDatabase } from './database.js';
+import { closeDatabase } from './database.js';
 import { basicAuth } from './middleware/auth.js';
 import { isAdmin } from './middleware/isAdmin.js';
 import { noCache } from './middleware/noCache.js';
@@ -13,8 +13,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-initDatabase();
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
