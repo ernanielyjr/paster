@@ -48,15 +48,15 @@ CREATE TABLE users (
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   is_admin INTEGER DEFAULT 0,
-  last_login TEXT,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  last_login_at DATETIME,
+  created_at DATETIME DEFAULT (datetime('now', 'localtime')),
 );
 
 CREATE TABLE contents (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
   content TEXT DEFAULT '',
-  updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -66,6 +66,7 @@ CREATE INDEX idx_contents_user_id ON contents(user_id);
 - Foreign keys habilitadas
 - CASCADE delete para limpeza automática
 - Índice em `user_id` para queries otimizadas
+- Timestamps em horario local (localtime)
 
 ## Instalação e Configuração
 
@@ -192,7 +193,8 @@ Lista todos usuários.
     "username": "admin",
     "is_admin": 1,
     "created_at": "2025-12-03 10:00:00",
-    "last_login": "2025-12-03 12:00:00"
+    "last_login_at": "2025-12-03 12:00:00",
+    "content_updated_at": "2025-12-03 15:30:00"
   }
 ]
 ```

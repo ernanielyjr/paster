@@ -59,7 +59,7 @@ Visível apenas para usuários com permissão de administrador.
 
 #### Lista de Usuários
 - Exibe todos os usuários cadastrados no sistema
-- Mostra informações: ID, username, tipo (Usuário ou Administrador), data de criação e último login
+- Mostra informações: ID, username, tipo (Usuário ou Administrador), data de criação, último login e última atualização de conteúdo
 - Possibilita editar ou excluir cada usuário
 
 #### Criar Novo Usuário
@@ -117,5 +117,10 @@ Visível apenas para usuários com permissão de administrador.
 
 ## Dicas
 
+- Use "Enviar Automaticamente" se trabalha com textos importantes e não quer perder alterações
 - Desative "Quebra de Linha" se estiver trabalhando com código ou dados estruturados onde as quebras de linha são importantes
+- O conteúdo é carregado automaticamente quando você acessa o sistema
 - Sempre que fizer alterações importantes, aguarde a mensagem de confirmação "Enviado com sucesso!"
+- Você pode ter o Paster aberto em vários dispositivos simultaneamente - qualquer um pode salvar
+- Para ver as últimas alterações feitas em outro dispositivo, basta recarregar a página
+- O sistema sempre mantém a última versão enviada, independente de qual dispositivo salvou
