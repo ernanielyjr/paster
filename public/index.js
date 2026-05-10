@@ -1,6 +1,10 @@
 async function loadInitialData() {
   try {
     const response = await fetch('/api/content');
+    if (!response.ok) {
+      window.location.reload();
+      return;
+    }
     const data = await response.json();
     document.getElementById('content').value = data.content;
 
@@ -157,6 +161,10 @@ function initializeApp() {
 
     const file = e.dataTransfer.files[0];
     if (file) {
+      if (file.size > 1024 * 1024) {
+        showMessage('Arquivo muito grande (máx: 1MB)', '#f44336');
+        return;
+      }
       const reader = new FileReader();
       reader.onload = function(event) {
         textarea.value = event.target.result;

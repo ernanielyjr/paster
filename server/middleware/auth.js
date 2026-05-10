@@ -11,11 +11,13 @@ export function basicAuth(req, res, next) {
 
   const base64Credentials = authHeader.split(' ')[1];
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
-  const [username, password] = credentials.split(':');
+  const colonIndex = credentials.indexOf(':');
+  const username = credentials.slice(0, colonIndex);
+  const password = credentials.slice(colonIndex + 1);
 
   const {password: hashedPassword = "", ...userWithoutPassword} = getUserByUsername(username) || {};
 
-  if (bcrypt.compareSync(password, hashedPassword) && hashedPassword && userWithoutPassword) {
+  if (hashedPassword && bcrypt.compareSync(password, hashedPassword)) {
     updateLastLogin(userWithoutPassword.id);
     req.user = userWithoutPassword;
     return next();
