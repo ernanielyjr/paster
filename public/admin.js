@@ -39,6 +39,15 @@ async function loadUsers() {
   }
 }
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function renderUsers() {
   const tbody = document.getElementById('usersTableBody');
 
@@ -53,7 +62,7 @@ function renderUsers() {
     return `
       <tr>
         <td>${user.id}</td>
-        <td>${user.username}</td>
+        <td>${escapeHtml(user.username)}</td>
         <td><span class="badge ${user.is_admin ? 'badge-admin' : 'badge-user'}">${user.is_admin ? 'Admin' : 'Usuário'}</span></td>
         <td><span class="datetime">${formatDateTime(user.created_at)}</span></td>
         <td><span class="datetime">${user.last_login_at ? formatDateTime(user.last_login_at) : 'Nunca'}</span></td>
