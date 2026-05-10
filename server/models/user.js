@@ -10,9 +10,16 @@ export function getUserByUsername(username) {
 export function createUser(username, password, isAdmin = false) {
   const db = getDatabase();
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const stmt = db.prepare('INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)');
-  const result = stmt.run(username, hashedPassword, isAdmin ? 1 : 0);
-  return result.lastInsertRowid;
+  const insertUser = db.prepare('INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)');
+  const insertContent = db.prepare("INSERT INTO contents (user_id, content, updated_at) VALUES (?, '', datetime('now', 'localtime'))");
+
+  const userId = db.transaction(() => {
+    const result = insertUser.run(username, hashedPassword, isAdmin ? 1 : 0);
+    insertContent.run(result.lastInsertRowid);
+    return result.lastInsertRowid;
+  })();
+
+  return userId;
 }
 
 export function getAllUsers() {
